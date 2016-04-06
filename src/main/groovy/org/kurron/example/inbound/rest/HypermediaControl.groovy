@@ -32,7 +32,7 @@ class HypermediaControl extends ResourceSupport {
     /**
      * The string form of the control's MIME-TYPE.
      */
-    static final String MIME_TYPE = MediaTypes.HAL_JSON_VALUE
+    static final String MIME_TYPE = 'application/hal+json'
 
     /**
      * The object form of the control's MIME-TYPE.

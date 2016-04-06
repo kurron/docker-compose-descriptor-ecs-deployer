@@ -22,8 +22,10 @@ import org.kurron.example.core.TimeComponent
 import org.kurron.feedback.AbstractFeedbackAware
 import org.kurron.stereotype.InboundRestGateway
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.hateoas.Link
+import org.springframework.hateoas.ExposesResourceFor
+import org.springframework.hateoas.mvc.ControllerLinkBuilder
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -34,7 +36,8 @@ import org.springframework.web.servlet.HandlerMapping
  **/
 @SuppressWarnings( 'GroovyUnusedDeclaration' )
 @InboundRestGateway
-@RequestMapping
+@RequestMapping( path = '/descriptor' )
+@ExposesResourceFor( HypermediaControl )
 class RestGateway extends AbstractFeedbackAware {
 
     /**
@@ -47,16 +50,19 @@ class RestGateway extends AbstractFeedbackAware {
         theComponent = aComponent
     }
 
-    @RequestMapping( path = '/descriptor/application', method = [RequestMethod.GET], produces = [HypermediaControl.MIME_TYPE] )
+    @RequestMapping( method = [RequestMethod.PUT],
+                     consumes = [HypermediaControl.MIME_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE],
+                     produces = [HypermediaControl.MIME_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE] )
     ResponseEntity<HypermediaControl> publishDescriptor( HttpServletRequest request ) {
         def control = defaultControl( request )
-        control.add( new Link( 'foo', 'bar' ) )
         ResponseEntity.ok( control )
     }
 
     protected static HypermediaControl defaultControl( HttpServletRequest request ) {
         def path = request.getAttribute( HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE ) as String
-        new HypermediaControl( status: HttpStatus.OK.value(), timestamp: Instant.now().toString(), path: path )
+        def control = new HypermediaControl( status: HttpStatus.OK.value(), timestamp: Instant.now().toString(), path: path )
+        control.add(  ControllerLinkBuilder.linkTo( RestGateway ).withSelfRel() )
+        control
     }
 
 }

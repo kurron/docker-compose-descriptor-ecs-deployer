@@ -28,7 +28,7 @@ TODO
 TODO
 
 ## Operations Endpoints
-The services supports a variety of endpoints useful to an Operations engineer.  The easiest way to explore
+The service supports a variety of endpoints useful to an Operations engineer.  The easiest way to explore
 the resources is via the [HAL Browser](https://github.com/mikekelly/hal-browser).  Just point your browser
 to `localhost:8080/operations/` and you'll be able to explore the different endpoints.  Endpoints include:
 
