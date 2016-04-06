@@ -32,8 +32,8 @@ plugins {
     id "com.jfrog.bintray" version "1.2"
 }
 
-description = 'Bare bones example REST micro-service'
-group = 'org.kurron.example'
+description = 'A REST micro-service that can publish Docker Compose descritprs to Amazon EC2 Container Service'
+group = 'org.kurron.ecs'
 
 ext.coverageExcludes = []
 
