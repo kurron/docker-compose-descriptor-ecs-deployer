@@ -18,31 +18,26 @@ package org.kurron.example.inbound.rest
 
 import java.time.Instant
 import javax.servlet.http.HttpServletRequest
-import javax.validation.Valid
-import org.kurron.example.MessagingContext
 import org.kurron.example.core.TimeComponent
 import org.kurron.feedback.AbstractFeedbackAware
 import org.kurron.stereotype.InboundRestGateway
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.hateoas.ExposesResourceFor
 import org.springframework.hateoas.mvc.ControllerLinkBuilder
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.validation.Errors
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.servlet.HandlerMapping
+import org.springframework.web.util.UriComponentsBuilder
 
 /**
- * Inbound HTTP gateway that supports the descriptor resource.
+ * Inbound HTTP gateway that supports the resource browsing.
  **/
 @SuppressWarnings( 'GroovyUnusedDeclaration' )
 @InboundRestGateway
-@RequestMapping( path = '/descriptor' )
-@ExposesResourceFor( HypermediaControl )
-class RestGateway extends AbstractFeedbackAware {
+@RequestMapping( path = '/' )
+class RootRestGateway extends AbstractFeedbackAware {
 
     /**
      * Knows how to get the most accurate time.
@@ -50,42 +45,22 @@ class RestGateway extends AbstractFeedbackAware {
     private final TimeComponent theComponent
 
     @Autowired
-    RestGateway( final TimeComponent aComponent ) {
+    RootRestGateway( final TimeComponent aComponent ) {
         theComponent = aComponent
     }
 
-    @RequestMapping( method = [RequestMethod.PUT],
-                     consumes = [HypermediaControl.MIME_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE],
+    @RequestMapping( path = '/',
+                     method = [RequestMethod.GET],
                      produces = [HypermediaControl.MIME_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE] )
-    ResponseEntity<HypermediaControl> publishDescriptor( @RequestBody @Valid HypermediaControl upload,
-                                                         Errors errors,
-                                                         HttpServletRequest request ) {
-        final ResponseEntity<HypermediaControl> response
+    ResponseEntity<HypermediaControl> resourceExplorer( HttpServletRequest request, UriComponentsBuilder builder ) {
         def control = defaultControl( request )
-        control.add( ControllerLinkBuilder.linkTo( RestGateway ).withSelfRel() )
-
-        if ( errors.hasErrors() ) {
-            addErrors( errors, control )
-            response = ResponseEntity.badRequest().body( control )
-        }
-        else {
-            //TODO: do some work
-            response = ResponseEntity.ok( control )
-        }
-        response
+        control.add( ControllerLinkBuilder.linkTo( RootRestGateway ).withSelfRel() )
+        control.add( ControllerLinkBuilder.linkTo( RestGateway ).withRel( 'deploy' ) )
+        ResponseEntity.ok( control )
     }
 
     private static HypermediaControl defaultControl( HttpServletRequest request ) {
         def path = request.getAttribute( HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE ) as String
         new HypermediaControl( status: HttpStatus.OK.value(), timestamp: Instant.now().toString(), path: path )
-    }
-
-    private static HypermediaControl addErrors( Errors errors, HypermediaControl toAugment ) {
-        def validationErrors = errors.fieldErrors.collect { new ValidationError( field: it.field, reason: it.defaultMessage ) }
-        toAugment.errorBlock = new ErrorBlock( code: MessagingContext.VALIDATION_ERROR.code,
-                                               message: 'The uploaded descriptor is invalid.  Please correct the issues and try again.',
-                                               developerMessage: 'Certain properties in the payload are invalid.',
-                                               validationErrors: validationErrors )
-        toAugment
     }
 }
