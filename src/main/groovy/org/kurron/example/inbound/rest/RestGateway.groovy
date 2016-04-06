@@ -70,17 +70,17 @@ class RestGateway extends AbstractFeedbackAware {
             response = ResponseEntity.badRequest().body( control )
         }
         else {
-            def url = toURL( upload )
+            def url = toURI( upload )
             def event = theComponent.publish( new PublisherCommand( descriptorLocation: url ) )
             response = ResponseEntity.ok( control )
         }
         response
     }
 
-    private URL toURL( HypermediaControl upload ) {
+    private URI toURI( HypermediaControl upload ) {
         def descriptorURL = upload.descriptorURL
         try {
-            new URL( descriptorURL )
+            new URI( descriptorURL )
         }
         catch( MalformedURLException e ) {
             feedbackProvider.sendFeedback( MessagingContext.MALFORMED_URL, descriptorURL, e )

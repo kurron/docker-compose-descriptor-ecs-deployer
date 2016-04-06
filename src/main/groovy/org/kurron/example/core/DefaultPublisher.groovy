@@ -23,9 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 /**
- * An example of a core component.  Remember, components can only interact with
- * other components and outbound gateways.  All the work they do is done in-memory,
- * no touching the network, filesystem or anything else that exists outside the process.
+ * Orchestrates the steps needed to obtain and publish the descriptor.
  **/
 @Component
 class DefaultPublisher extends AbstractFeedbackAware implements DescriptorPublisher, GenerationAbility {

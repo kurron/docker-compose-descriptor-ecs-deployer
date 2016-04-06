@@ -16,15 +16,28 @@
 
 package org.kurron.example.outbound.repository
 
+import groovy.transform.InheritConstructors
+import org.kurron.feedback.exceptions.AbstractError
+import org.springframework.http.HttpStatus
+
 /**
- * An outbound gateway responsible for acquiring the Docker Compose descriptor.
- **/
-interface DownloadService {
+ * Indicates that we could not obtain the descriptor.
+ */
+@InheritConstructors
+class DownloadError extends AbstractError {
 
     /**
-     * Fetches the descriptor from the specified location.
-     * @param location where to grab the descriptor from.
-     * @return the downloaded descriptor.
+     * Failure message to show to the user..
      */
-    String acquire( URI location )
+    String detail
+
+    @Override
+    HttpStatus getHttpStatus() {
+        HttpStatus.BAD_GATEWAY
+    }
+
+    @Override
+    String getDeveloperMessage() {
+        "The downstream message was ${detail}"
+    }
 }

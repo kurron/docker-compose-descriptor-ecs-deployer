@@ -31,7 +31,8 @@ enum MessagingContext implements FeedbackContext {
     MISSING_HTTP_HEADER_ERROR( 1003, FeedbackLevel.WARN, Audience.QA, 'Required {} header is missing!' ),
     GENERIC_ERROR( 1007, FeedbackLevel.ERROR, Audience.QA, 'The following error has occurred and was caught by the global error handler: {}' ),
     VALIDATION_ERROR( 1008, FeedbackLevel.INFO, Audience.QA, 'The property {} is invalid. Cause: {}' ),
-    MALFORMED_URL( 1009, FeedbackLevel.INFO, Audience.QA, 'The URL {} is invalid.' )
+    MALFORMED_URL( 1009, FeedbackLevel.WARN, Audience.QA, 'The URL {} is invalid.' ),
+    UNABLE_TO_FETCH_DESCRIPTOR( 1010, FeedbackLevel.ERROR, Audience.QA, 'Unable to download the descriptor from {}.' )
 
     private final int code
     private final String formatString

@@ -24,5 +24,5 @@ class PublisherCommand {
     /**
      * Where we should pull the descriptor from.
      */
-    URL descriptorLocation
+    URI descriptorLocation
 }

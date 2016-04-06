@@ -20,6 +20,8 @@ import groovy.util.logging.Slf4j
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
+import org.springframework.context.annotation.Bean
+import org.springframework.web.client.RestTemplate
 
 /**
  * The entry point into the system.  Runs as a standalone web server.
@@ -33,4 +35,8 @@ class Application {
         SpringApplication.run( Application, args )
     }
 
+    @Bean
+    RestTemplate restTemplate() {
+        new RestTemplate()
+    }
 }

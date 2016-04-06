@@ -25,7 +25,7 @@ import org.kurron.stereotype.ServiceStub
 class StubDownloadService implements DownloadService {
 
     @Override
-    String acquire( final URL location ) {
+    String acquire( final URI location ) {
         'some fake descriptor content'
     }
 }
