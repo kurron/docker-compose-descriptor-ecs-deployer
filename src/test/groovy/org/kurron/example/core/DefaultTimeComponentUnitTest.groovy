@@ -19,7 +19,7 @@ package org.kurron.example.core
 import java.time.Instant
 import org.junit.experimental.categories.Category
 import org.kurron.categories.UnitTest
-import org.kurron.example.outbound.TimeService
+import org.kurron.example.outbound.repository.DownloadService
 import org.kurron.traits.GenerationAbility
 import spock.lang.Specification
 
@@ -31,7 +31,7 @@ class DefaultTimeComponentUnitTest extends Specification implements GenerationAb
 
     def 'exercise currentTime happy path'() {
         given: 'a subject under test'
-        def stub = Stub( TimeService )
+        def stub = Stub( DownloadService )
         stub.checkTheTime() >> Instant.now()
 
         def sut = new DefaultPublisher( stub )

@@ -16,8 +16,10 @@
 
 package org.kurron.example.core
 
+import org.kurron.example.outbound.repository.DownloadService
 import org.kurron.feedback.AbstractFeedbackAware
 import org.kurron.traits.GenerationAbility
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 /**
@@ -28,8 +30,19 @@ import org.springframework.stereotype.Component
 @Component
 class DefaultPublisher extends AbstractFeedbackAware implements DescriptorPublisher, GenerationAbility {
 
+    /**
+     * Knows how to acquire the descriptor.
+     */
+    private final DownloadService theDownloadService
+
+    @Autowired
+    DefaultPublisher( final DownloadService aDownloadService ) {
+        theDownloadService = aDownloadService
+    }
+
     @Override
     PublisherEvent publish( final PublisherCommand command ) {
-        throw new UnsupportedOperationException( 'publish' )
+        def descriptor = theDownloadService.acquire( command.descriptorLocation )
+        new PublisherEvent()
     }
 }

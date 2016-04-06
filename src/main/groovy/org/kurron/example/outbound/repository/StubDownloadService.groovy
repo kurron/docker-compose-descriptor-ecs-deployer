@@ -14,21 +14,18 @@
  * limitations under the License.
  */
 
-package org.kurron.example.outbound
+package org.kurron.example.outbound.repository
 
-import java.time.Instant
-import org.kurron.feedback.AbstractFeedbackAware
-import org.kurron.stereotype.OutboundGateway
+import org.kurron.stereotype.ServiceStub
 
 /**
- * A "real" implementation of the time service that consults with an official authority.
+ * A "fake" implementation of the download service used in testing.
  **/
-@SuppressWarnings( 'GroovyUnusedDeclaration' )
-@OutboundGateway
-class RemoteTimeGateway extends AbstractFeedbackAware implements TimeService {
+@ServiceStub
+class StubDownloadService implements DownloadService {
 
     @Override
-    Instant checkTheTime() {
-        Instant.now()
+    String acquire( final URL location ) {
+        'some fake descriptor content'
     }
 }
