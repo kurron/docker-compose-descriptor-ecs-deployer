@@ -19,6 +19,7 @@ package org.kurron.example.inbound.rest
 import java.time.Instant
 import javax.servlet.http.HttpServletRequest
 import javax.validation.Valid
+import org.kurron.example.MessagingContext
 import org.kurron.example.core.TimeComponent
 import org.kurron.feedback.AbstractFeedbackAware
 import org.kurron.stereotype.InboundRestGateway
@@ -94,9 +95,9 @@ class RestGateway extends AbstractFeedbackAware {
 
     private static HypermediaControl addErrors( Errors errors, HypermediaControl toAugment ) {
         def validationErrors = errors.fieldErrors.collect { new ValidationError( field: it.field, reason: it.defaultMessage ) }
-        toAugment.errorBlock = new ErrorBlock( code: Integer.MIN_VALUE,
-                                               message: 'something smart',
-                                               developerMessage: 'something smart',
+        toAugment.errorBlock = new ErrorBlock( code: MessagingContext.VALIDATION_ERROR.code,
+                                               message: 'The uploaded descriptor is invalid.  Please correct the issues and try again.',
+                                               developerMessage: 'Certain properties in the payload are invalid.',
                                                validationErrors: validationErrors )
         toAugment
     }
