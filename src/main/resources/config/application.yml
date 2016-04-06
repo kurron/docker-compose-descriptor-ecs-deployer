@@ -1,5 +1,54 @@
+---
+example:
+    foo: default
+
 info:
     app:
         name: ${name}
         description: ${description}
         version: ${version}
+
+endpoints:
+    health:
+        time-to-live: 1000
+        sensitive: false
+
+logging:
+    config: classpath:logback.xml
+
+management:
+    contextPath: /operations
+    security:
+        enabled: false
+        role: admin
+        sessions: stateless
+
+security:
+    user:
+        name: developer
+        password: developer
+    basic:
+        enabled: false
+        realm: example
+
+server:
+    contextPath: /
+    port: 8080
+    useForwardHeaders: true
+    tomcat:
+        portHeader: X-Forwarded-Port
+        protocolHeader: X-Forwarded-Protocol-Header
+        remoteIpHeader: X-Forwarded-Remote-IP-Header
+
+spring:
+    application:
+        name: ${name}
+    groovy:
+        template:
+            check-template-location: false
+    jackson:
+        serialization:
+            indent_output: true
+        serialization-inclusion: non_empty
+    main:
+        banner-mode: console
