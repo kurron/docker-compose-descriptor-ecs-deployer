@@ -16,11 +16,8 @@
 
 package org.kurron.example.core
 
-import java.time.Instant
-import org.kurron.example.outbound.TimeService
 import org.kurron.feedback.AbstractFeedbackAware
 import org.kurron.traits.GenerationAbility
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 /**
@@ -29,20 +26,10 @@ import org.springframework.stereotype.Component
  * no touching the network, filesystem or anything else that exists outside the process.
  **/
 @Component
-class DefaultTimeComponent extends AbstractFeedbackAware implements TimeComponent, GenerationAbility {
-
-    /**
-     * Outbound gateway.
-     */
-    private final TimeService gateway
-
-    @Autowired
-    DefaultTimeComponent( TimeService aGateway ) {
-        gateway = aGateway
-    }
+class DefaultPublisher extends AbstractFeedbackAware implements DescriptorPublisher, GenerationAbility {
 
     @Override
-    Instant currentTime() {
-        gateway.checkTheTime()
+    PublisherEvent publish( final PublisherCommand command ) {
+        throw new UnsupportedOperationException( 'publish' )
     }
 }

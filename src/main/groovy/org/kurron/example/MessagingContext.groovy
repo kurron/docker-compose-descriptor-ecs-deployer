@@ -30,7 +30,8 @@ enum MessagingContext implements FeedbackContext {
     GENERATED_TRACING_HEADER( 1002, FeedbackLevel.DEBUG, Audience.DEVELOPMENT, 'Generated trace id for OPTIONS call: {} = {}' ),
     MISSING_HTTP_HEADER_ERROR( 1003, FeedbackLevel.WARN, Audience.QA, 'Required {} header is missing!' ),
     GENERIC_ERROR( 1007, FeedbackLevel.ERROR, Audience.QA, 'The following error has occurred and was caught by the global error handler: {}' ),
-    VALIDATION_ERROR( 1008, FeedbackLevel.INFO, Audience.QA, 'The property {} is invalid. Cause: {}' )
+    VALIDATION_ERROR( 1008, FeedbackLevel.INFO, Audience.QA, 'The property {} is invalid. Cause: {}' ),
+    MALFORMED_URL( 1009, FeedbackLevel.INFO, Audience.QA, 'The URL {} is invalid.' )
 
     private final int code
     private final String formatString

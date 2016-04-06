@@ -20,7 +20,8 @@ import java.time.Instant
 import javax.servlet.http.HttpServletRequest
 import javax.validation.Valid
 import org.kurron.example.MessagingContext
-import org.kurron.example.core.TimeComponent
+import org.kurron.example.core.DescriptorPublisher
+import org.kurron.example.core.PublisherCommand
 import org.kurron.feedback.AbstractFeedbackAware
 import org.kurron.stereotype.InboundRestGateway
 import org.springframework.beans.factory.annotation.Autowired
@@ -47,10 +48,10 @@ class RestGateway extends AbstractFeedbackAware {
     /**
      * Knows how to get the most accurate time.
      */
-    private final TimeComponent theComponent
+    private final DescriptorPublisher theComponent
 
     @Autowired
-    RestGateway( final TimeComponent aComponent ) {
+    RestGateway( final DescriptorPublisher aComponent ) {
         theComponent = aComponent
     }
 
@@ -69,10 +70,22 @@ class RestGateway extends AbstractFeedbackAware {
             response = ResponseEntity.badRequest().body( control )
         }
         else {
-            //TODO: do some work
+            def url = toURL( upload )
+            def event = theComponent.publish( new PublisherCommand( descriptorLocation: url ) )
             response = ResponseEntity.ok( control )
         }
         response
+    }
+
+    private URL toURL( HypermediaControl upload ) {
+        def descriptorURL = upload.descriptorURL
+        try {
+            new URL( descriptorURL )
+        }
+        catch( MalformedURLException e ) {
+            feedbackProvider.sendFeedback( MessagingContext.MALFORMED_URL, descriptorURL, e )
+            throw new MalformedUrlError( MessagingContext.MALFORMED_URL, descriptorURL )
+        }
     }
 
     private static HypermediaControl defaultControl( HttpServletRequest request ) {

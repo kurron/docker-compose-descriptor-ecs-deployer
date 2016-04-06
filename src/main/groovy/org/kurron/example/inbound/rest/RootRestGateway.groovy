@@ -18,10 +18,8 @@ package org.kurron.example.inbound.rest
 
 import java.time.Instant
 import javax.servlet.http.HttpServletRequest
-import org.kurron.example.core.TimeComponent
 import org.kurron.feedback.AbstractFeedbackAware
 import org.kurron.stereotype.InboundRestGateway
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.hateoas.mvc.ControllerLinkBuilder
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -38,16 +36,6 @@ import org.springframework.web.util.UriComponentsBuilder
 @InboundRestGateway
 @RequestMapping( path = '/' )
 class RootRestGateway extends AbstractFeedbackAware {
-
-    /**
-     * Knows how to get the most accurate time.
-     */
-    private final TimeComponent theComponent
-
-    @Autowired
-    RootRestGateway( final TimeComponent aComponent ) {
-        theComponent = aComponent
-    }
 
     @RequestMapping( path = '/',
                      method = [RequestMethod.GET],
