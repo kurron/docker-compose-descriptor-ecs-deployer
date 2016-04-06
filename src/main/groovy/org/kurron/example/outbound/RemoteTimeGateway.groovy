@@ -17,7 +17,6 @@
 package org.kurron.example.outbound
 
 import java.time.Instant
-import org.kurron.example.MessagingContext
 import org.kurron.feedback.AbstractFeedbackAware
 import org.kurron.stereotype.OutboundGateway
 
@@ -30,18 +29,6 @@ class RemoteTimeGateway extends AbstractFeedbackAware implements TimeService {
 
     @Override
     Instant checkTheTime() {
-        // see FeignIntegrationTest for an example on a better way to
-        // make HTTP calls
-
-        // force an error to trigger the circuit-breaker
-        def e = new UnsupportedOperationException( 'checkTime' )
-        feedbackProvider.sendFeedback( MessagingContext.FORCED_ERROR, 1964 )
-        throw e
-    }
-
-    @SuppressWarnings( ['GrMethodMayBeStatic'] )
-    private Instant defaultTime() {
-        // looks like we can't reach the time server, let's return our local time instead
         Instant.now()
     }
 }
