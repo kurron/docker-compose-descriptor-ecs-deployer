@@ -20,11 +20,13 @@ import org.junit.experimental.categories.Category
 import org.kurron.categories.InboundIntegrationTest
 import org.kurron.example.Application
 import org.kurron.traits.GenerationAbility
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.SpringApplicationContextLoader
 import org.springframework.boot.test.TestRestTemplate
 import org.springframework.boot.test.WebIntegrationTest
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
@@ -33,24 +35,26 @@ import spock.lang.Specification
  **/
 @Category( InboundIntegrationTest )
 @WebIntegrationTest( randomPort = true )
-@ContextConfiguration( classes = Application, loader = SpringApplicationContextLoader )
+@ContextConfiguration( classes = [Application, RestGatewayIntegrationTestConfiguration], loader = SpringApplicationContextLoader )
 class RestGatewayIntegrationTest extends Specification implements GenerationAbility, RestCapable {
 
     @Value( '${local.server.port}' )
     int port
 
-    private def template = new TestRestTemplate()
+    @Autowired
+    TestRestTemplate template
 
     def 'exercise GET happy path'() {
         given: 'a proper testing environment'
         assert port
+        template
 
         when: 'we GET /descriptor/application'
         def uri = buildURI( port, '/descriptor/application', [:] )
-        def response = template.getForEntity( uri, String )
+        ResponseEntity<HypermediaControl> response = template.getForEntity( uri, HypermediaControl )
 
         then: 'we get a proper response'
         HttpStatus.OK == response.statusCode
-        println response.body
+        response.body.links
     }
 }
