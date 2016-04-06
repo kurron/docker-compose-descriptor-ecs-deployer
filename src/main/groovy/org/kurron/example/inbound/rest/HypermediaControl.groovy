@@ -19,6 +19,7 @@ package org.kurron.example.inbound.rest
 import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.Canonical
 import javax.validation.constraints.NotNull
+import org.springframework.hateoas.MediaTypes
 import org.springframework.hateoas.ResourceSupport
 import org.springframework.http.MediaType
 
@@ -31,31 +32,30 @@ class HypermediaControl extends ResourceSupport {
     /**
      * The string form of the control's MIME-TYPE.
      */
-    static final String MIME_TYPE = 'application/hal+json'
+    static final String MIME_TYPE = MediaTypes.HAL_JSON_VALUE
 
     /**
      * The object form of the control's MIME-TYPE.
      */
-    static final MediaType MEDIA_TYPE = MediaType.parseMediaType( MIME_TYPE )
+    static final MediaType MEDIA_TYPE = MediaTypes.HAL_JSON
 
     /**
-     * HTTP status of the service, response-only.
+     * Output only, HTTP status of the service.
      */
     @JsonProperty( 'status' )
     Integer status
 
     /**
-     * ISO 8601 timestamp of when the service completed, response-only.
+     * Output only, ISO 8601 timestamp of when the service completed.
      */
     @JsonProperty( 'timestamp' )
     String timestamp
 
     /**
-     * Relative path of the completed service, response-only.
+     * Output only, Relative path of the completed service.
      */
     @JsonProperty( 'path' )
     String path
-
 
     /**
      * Output only, where fault information is stored.

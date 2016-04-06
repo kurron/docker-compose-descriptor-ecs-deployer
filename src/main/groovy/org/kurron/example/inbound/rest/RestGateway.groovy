@@ -32,6 +32,7 @@ import org.springframework.web.servlet.HandlerMapping
 /**
  * Inbound HTTP gateway that supports the FIXME resource.
  **/
+@SuppressWarnings( 'GroovyUnusedDeclaration' )
 @InboundRestGateway
 @RequestMapping
 class RestGateway extends AbstractFeedbackAware {
@@ -47,7 +48,7 @@ class RestGateway extends AbstractFeedbackAware {
     }
 
     @RequestMapping( path = '/descriptor/application', method = [RequestMethod.GET], produces = [HypermediaControl.MIME_TYPE] )
-    ResponseEntity<HypermediaControl> fetchApplicationList( HttpServletRequest request ) {
+    ResponseEntity<HypermediaControl> publishDescriptor( HttpServletRequest request ) {
         def control = defaultControl( request )
         control.add( new Link( 'foo', 'bar' ) )
         ResponseEntity.ok( control )
