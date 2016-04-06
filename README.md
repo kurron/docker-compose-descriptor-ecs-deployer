@@ -1,30 +1,7 @@
 # Overview
-This project is a template project that will quickly get you set up with a Spring Boot REST service.
-
-# Prerequisites
-* [JDK 8](http://www.oracle.com/technetwork/java/index.html) installed and working
-* [Lazybones](https://github.com/pledbrook/lazybones) and working.  Using [SDKMAN!](http://sdkman.io/) is the easiest way to install it.
-* TODO: discuss access private template area
-
-# Building
-This project is a collection of text files that Lazybones copies around so there is nothing to build.
-
-# Installation
-Type `lazybones list` and make sure the `jvm-guy-spring-boot-project` is available.  Assuming you want to create 
-a new project named `sample` in the `/tmp` directory, you would type `lazybones create jvm-guy-spring-boot-project /tmp/sample`.
-
-# Tips and Tricks
-
-## What Is Provided
-TODO
-
-## Migrating The Template
-TODO
-
-------------
-
-# Overview
-This project ...
+This project can pull a [Docker Compose](https://docs.docker.com/compose/) descriptor and deploy it to
+[Amazon EC2 Container Service](https://aws.amazon.com/ecs/).  It is intended to be used by automated
+deployment pipelines.
 
 # Prerequisites
 * [JDK 8](http://www.oracle.com/technetwork/java/index.html) installed and working
@@ -51,7 +28,9 @@ TODO
 TODO
 
 ## Operations Endpoints
-The services supports a variety of endpoints useful to an Operations engineer.
+The services supports a variety of endpoints useful to an Operations engineer.  The easiest way to explore
+the resources is via the [HAL Browser](https://github.com/mikekelly/hal-browser).  Just point your browser
+to `localhost:8080/operations/` and you'll be able to explore the different endpoints.  Endpoints include:
 
 * /operations - Provides a hypermedia-based “discovery page” for the other endpoints.
 * /operations/autoconfig - Displays an auto-configuration report showing all auto-configuration candidates and the reason why they ‘were’ or ‘were not’ applied.
@@ -69,6 +48,10 @@ The services supports a variety of endpoints useful to an Operations engineer.
 * /operations/shutdown - Allows the application to be gracefully shutdown (not enabled by default).
 * /operations/trace - Displays trace information (by default the last few HTTP requests).
 
+## REST API
+The easiest way to explore the available resources is via the [HAL Browser](https://github.com/mikekelly/hal-browser).
+Just point your browser to `localhost:8080/` and you'll be able to explore the different endpoints.
+
 ## REST API Documentation
 You can find the current API documentation at `/docs/index.hml`.
 
@@ -78,6 +61,4 @@ TODO
 
 # License and Credits
 This project is licensed under the [Apache License Version 2.0, January 2004](http://www.apache.org/licenses/).
-
-# List of Changes
 
