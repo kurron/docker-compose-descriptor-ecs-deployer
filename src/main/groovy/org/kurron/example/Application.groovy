@@ -17,6 +17,7 @@
 package org.kurron.example
 
 import groovy.util.logging.Slf4j
+import org.kurron.feedback.FeedbackAwareBeanPostProcessor
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -33,6 +34,11 @@ class Application {
 
     static void main( String[] args ) {
         SpringApplication.run( Application, args )
+    }
+
+    @Bean
+    static FeedbackAwareBeanPostProcessor  FeedbackAwareBeanPostProcessor( ApplicationProperties configuration ) {
+        new FeedbackAwareBeanPostProcessor( configuration.serviceCode, configuration.serviceInstance, configuration.realm )
     }
 
     @Bean

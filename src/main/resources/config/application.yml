@@ -1,6 +1,9 @@
 ---
 example:
     foo: default
+    serviceCode: ${name}
+    serviceInstance: \${random.int[1,65536]}}
+    realm: development
 
 info:
     app:

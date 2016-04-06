@@ -48,7 +48,7 @@ class RemoteDownloadGateway extends AbstractFeedbackAware implements DownloadSer
             response.body
         }
         catch( RestClientException e ) {
-            feedbackProvider.sendFeedback( MessagingContext.UNABLE_TO_FETCH_DESCRIPTOR, e )
+            feedbackProvider.sendFeedback( MessagingContext.UNABLE_TO_FETCH_DESCRIPTOR, location.toString() )
             def error = new DownloadError( MessagingContext.UNABLE_TO_FETCH_DESCRIPTOR, location.toString() )
             error.detail = e.message
             throw error
